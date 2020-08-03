@@ -1,0 +1,14 @@
+<%= render 'layouts/helpers/index',
+    model: :technical_service,
+    controller: :technical_services,
+    attributes: [
+      {model: :technical_service_interval, attr: :description},
+      :start_time,
+      :final_time,
+      {model: :military, attr: :name},
+    ],
+    actions: [:edit, :delete, :download_technical_services_excel],
+    delete_identification: :description,
+    collection: @technical_services,
+    search_match: nil %>
+

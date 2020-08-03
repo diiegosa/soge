@@ -1,0 +1,58 @@
+<% content_for :header_page do %>
+    <%= render 'layouts/helpers/title_page', title: translate_module(:occurrence) %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= translate_module(:occurrence, :other) %></h3>
+
+        <div class="card-tools">
+          <div class="row">
+            <%= link_to "/occurrences/#{@event_id}/new", class: 'btn btn-primary btn-sm mr-3' do %>
+              Cadastrar
+            <% end %>
+
+            <%= render 'layouts/helpers/search_box',
+              model: :occurrence,
+              controller: :occurrences,
+              search_match: :occurrence_nature_description_cont %>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body table-responsive p-0">
+        <%= render 'occurrences' %>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+</div>
+
+
+<table class="table table-bordered">
+    <thead>                  
+        <tr>
+            <th>Horário</th>
+            <th>13:00 - 14:00</th>
+            <th>14:01 - 15:00</th>
+            <th>15:01 - 16:00</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <th style="text-align:center; background-color:LightGray" colspan="5">
+            Incendio
+        </th>
+        
+        <tr>
+            <td>incendio em area verde</td>
+            <td>3</td>
+            <td>5</td>
+            <td>4</td>
+            <td>6</td>
+        </tr>
+    </tbody>
+</table>

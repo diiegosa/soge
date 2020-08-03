@@ -1,0 +1,167 @@
+<div class="bg-city-selection"></div>
+
+<div class="d-flex align-items-center" style="min-height: 100vh">
+    <div class="container">
+        <div class="row">
+            <div class="col align-self-center d-flex flex-column align-items-center justify-content-center">
+                <div class="lockscreen-logo text-white">
+                    <%= image_tag("logo_cbmpe.png", style: "width: 120px") %><br />
+                    <b>SOGE</b><br /> Sistema Operacional para Grandes Eventos
+                </div>
+                <p class="text-white">Seja bem vindo, <b><%= "#{current_user.name} (#{current_user.profile.name})" %></b></p>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <% if(can? :report_by_ome_and_date, Occurrence)  %>
+                <div class="col-md-4 col align-self-center">
+                    <div class="col align-self-center card card-outline card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Relatório</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <%= form_tag('/occurrences/report_by_ome_and_date', method: :get ) do %>
+                                <div class="form-group">
+                                    <label for="report_label">Nome do Relatório</label>
+                                    <%= text_field_tag :report_label, "", class: "form-control", required: true %>
+                                </div>
+
+                                <div class="text-left">Selecione o período</div> 
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                    </div>
+                                    <input required value="<%= get_default_interval() %>" type="text" name="report_interval" class="form-control float-right" id="reservationdate">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-arrow-right text-white"></i></button>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div><!-- /.card-body -->
+                    </div><!-- /.card -->
+                </div>
+            <% end %>
+
+            <% if(can? :index, TechnicalService) || (can? :qrcode_generate, TechnicalService)  %>
+                <div class="col-md-4 col align-self-center">
+                    <div class="card card-outline card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Serviço Técnico</h3>
+                        </div><!-- /.card-header -->
+
+                        <div class="card-body">
+                            <div class="text-center">
+                                <% if can? :qrcode_generate, TechnicalService %>
+                                    <a href="/qrcode_generate" class="btn btn-block btn-info">Gerar QRCode</a>
+                                <% end %>
+                                <% if can? :index, TechnicalService %>
+                                    <a href="<%= new_technical_service_path %>" class="btn btn-block btn-primary text-white">Cadastrar Serviço Técnico</a>
+
+                                    <a href="<%= technical_services_url %>" class="btn btn-block btn-default">Listar Serviços Técnicos</a>
+                                <% end %>
+                            </div>
+                        </div><!-- /.card-body -->
+                    </div><!-- /.card -->
+                </div>
+            <% end %>
+            
+            <% if can? :index, Event %>
+                <div class="col-md-4 col align-self-center">
+                    <div class="card card-outline card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Operacional</h3>
+                        </div>
+                        <!-- /.card-header -->
+
+                        <div class="card-body">
+                            <div class="text-center pb-4">
+                                <a href="/home/events/new" class="btn btn-block btn-primary text-white">Cadastrar Evento</a>
+                            </div>
+                            
+                            <%= form_tag('/events', method: :get ) do %>
+                                <div class="lockscreen-name text-left">Selecione a cidade para listar eventos</div>                    
+                                <div class="input-group">
+                                    <%= select_tag :city_selected, options_for_select(@cities.collect{ |u| [u.name, u.id] }), 
+                                        class: "form-control selectpicker", "data-actions-box": "true", "data-live-search": "true",
+                                        prompt: "Selecionar...", required: true  %>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-arrow-right text-white"></i></button>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div><!-- /.card-body -->
+                    </div><!-- /.card -->
+                </div>
+            <% end %>
+
+        </div>
+
+        <% if user_signed_in? %>
+            <div class="row justify-content-center">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#modal-password-update">
+                        Alterar Senha
+                    </button>
+                    <div class="modal fade" id="modal-password-update" style="display: none;" aria-hidden="true" data-backdrop="static">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Alterar senha</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <%= form_tag("/password_update", method: 'post', remote: true, id: 'form-password-update' ) do %>
+                                    <div class="modal-body">
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-md-12">
+                                                <label for="current_password">Senha ATUAL</label>
+                                                <%= password_field_tag :current_password, "", class: "form-control", required: true %>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label for="password">NOVA senha</label>
+                                                <%= password_field_tag :password, "", class: "form-control", required: true %>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label for="password_confirmation">Confirme a NOVA senha</label>
+                                                <%= password_field_tag :password_confirmation, "", class: "form-control", required: true %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Alterar</button>
+                                    </div>
+
+                                    <div class="overlay" style="display: none; opacity: 0; justify-content: center; align-items: center;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
+                                <% end %>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                </div>
+
+                <% if can? :index, Profile %>
+                    <div class="col-md-2">
+                        <div class="input-group-prepend">
+                            <button type="button" class="btn btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Gerenciar
+                            </button>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item" href="/users">Usuário</a>
+                                <a class="dropdown-item" href="/profiles">Perfil</a>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+                
+                <div class="col-md-2">
+                    <a href="<%= destroy_user_session_url %>" class="btn btn-block btn-default">Sair</a>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>

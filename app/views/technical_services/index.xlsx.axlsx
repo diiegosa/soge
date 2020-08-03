@@ -1,0 +1,30 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+  project_heading = style.add_style(b: true, sz: 14)
+  heading = style.add_style(b: true)
+
+  wb.add_worksheet(name: "SERVICOS_TECNICOS") do |sheet|
+    sheet.add_row ["SERVIÇOS TÉCNICOS"], style: project_heading
+    sheet.add_row []
+    sheet.add_row ["","TOTAL"], style: project_heading
+
+    TechnicalServiceOccurrence.select(:occurrence_nature_id, "SUM(amount) as total").group(:occurrence_nature_id).each do |occurrence|
+      sheet.add_row [occurrence.occurrence_nature.description, occurrence.total], style: project_heading
+    end
+
+    sheet.add_row []
+    sheet.add_row ["DETALHAMENTO"], style: project_heading
+    sheet.add_row ["PERÍODO","DATA_INÍCIO","HORA_INÍCIO","DATA_FIM","HORA_FIM","RESPONSÁVEL"].concat(@technical_services.first.technical_service_occurrences.map { |occurrence| occurrence.occurrence_nature.description}), style: heading
+
+    @technical_services.each do |tc|
+          sheet.add_row [ tc.technical_service_interval.description,
+                          tc.get_date(tc.start_time),
+                          tc.get_time(tc.start_time),
+                          tc.get_date(tc.final_time),
+                          tc.get_time(tc.final_time),
+                          tc.military.name
+                        ].concat(tc.technical_service_occurrences.map { |occurrence| occurrence.amount.nil? ? 0 : occurrence.amount })
+    end
+  end
+end

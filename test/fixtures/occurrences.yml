@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  startTime: 2020-02-03 10:05:29
+  finalTime: 2020-02-03 10:05:29
+  amount: 1
+  occurrenceNature: one
+  ServiceStation: one
+
+two:
+  startTime: 2020-02-03 10:05:29
+  finalTime: 2020-02-03 10:05:29
+  amount: 1
+  occurrenceNature: two
+  ServiceStation: two

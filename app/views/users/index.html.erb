@@ -1,0 +1,12 @@
+<%= render 'layouts/helpers/index',
+    model: :user,
+    controller: :users,
+    attributes: [
+      {model: :profile, attr: :name},
+      :name,
+      :email
+    ],
+    actions: [:edit, :delete],
+    delete_identification: :name,
+    collection: @users,
+    search_match: :name_or_email_cont %>

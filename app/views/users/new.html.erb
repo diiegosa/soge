@@ -1,0 +1,12 @@
+<%= render 'layouts/helpers/form_box',
+  action: :new,
+  model: :user,
+  object: @user,
+  model_path: users_path,
+  btn_action: :create,
+  fields: [
+    {kind: :select, name: :profile_id, collection: @profiles.collect {|p| [ p.name, p.id ]}, input_size: 3, extra_class: ''},
+    {kind: :text_field, name: :name, input_size: 8, extra_class: ''},
+    {kind: :text_field, name: :email, input_size: 7, extra_class: ''},
+    {kind: :password_field, name: :password, input_size: 4, extra_class: ''}
+  ] %>

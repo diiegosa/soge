@@ -1,0 +1,38 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+  project_heading = style.add_style(b: true, sz: 14)
+  heading = style.add_style(b: true)
+
+  wb.add_worksheet(name: "DETALHAMENTO_GERAL") do |sheet|
+    sheet.add_row ["DETALHAMENTO (" + @event.description + ")"], style: project_heading
+    sheet.add_row ["Baixado em", Time.now.strftime("%d/%m/%Y %H:%M")]
+    sheet.add_row []
+    sheet.add_row ["DADOS GERAIS DO EVENTO"], style: heading
+    sheet.add_row ["NOME","INÍCIO","TÉRMINO","INTERVALO_PARA_LANÇAMENTO_DE_OCORRÊNCIAS","QTD_TURNOS","MUNICÍPIO","DIRETORIA"], style: heading
+    sheet.add_row [@event.description, @event.start_time, @event.final_time, @event.occurrence_interval, @event.work_shift_amount, @event.city.name, @event.management.acronym]
+  
+    sheet.add_row []
+    sheet.add_row ["POSTOS_DE_ATENDIMENTO"], style: heading
+
+    sheet.add_row ["TIPO","SUBTIPO","NOME","SIGLA","POSTO_DE_COMANDO"].concat(
+      @event.service_stations.first.service_station_work_shifts.map do |service_station_work_shift|
+        "QTD_MILITARES_TURNO_#{service_station_work_shift.work_shift}"
+      end
+    ), style: heading
+    @event.service_stations.each do |ss|
+      sheet.add_row [ss.service_station_type.description, ss.service_station_vehicle_type.nil? ? "" : ss.service_station_vehicle_type.vehicle_type.description, ss.description, ss.acronym, ss.command_post.acronym].concat(ss.service_station_work_shifts.map { |ws| ws.militaries_quantity })
+    end
+  end
+  wb.add_worksheet(name: "OCORRENCIAS") do |sheet|
+    sheet.add_row ["DIRETORIA","EVENTO","Posto de Comando","Plataforma","Natureza da Ocorrência","Quantidade","Intervalo de Hora","Data do Evento"], style: heading
+    @event.occurrences.each do |oc|
+      sheet.add_row [ @event.management.acronym, 
+                      @event.description, 
+                      oc.service_station.command_post.acronym + " (" + oc.service_station.command_post.description + ")", 
+                      oc.service_station.acronym + " - " + (oc.service_station.service_station_type.is_vehicle? ? oc.service_station.service_station_type.description + " (" + oc.service_station.service_station_vehicle_type.vehicle_type.description + ")" : oc.service_station.service_station_type.description),
+                      oc.occurrence_nature.occurrence_type.description + " (" + oc.occurrence_nature.description + ")", oc.amount, oc.get_time(oc.start_time) + "-" + oc.get_time(oc.final_time), oc.get_date(oc.start_time)
+                    ]
+    end
+  end
+end

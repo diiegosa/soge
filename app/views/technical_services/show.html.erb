@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @technical_service.start_time %>
+</p>
+
+<p>
+  <strong>Final time:</strong>
+  <%= @technical_service.final_time %>
+</p>
+
+<p>
+  <strong>Answerable registry:</strong>
+  <%= @technical_service.answerable_registry %>
+</p>
+
+<p>
+  <strong>Technical service:</strong>
+  <%= @technical_service.technical_service %>
+</p>
+
+<%= link_to 'Edit', edit_technical_service_path(@technical_service) %> |
+<%= link_to 'Back', technical_services_path %>

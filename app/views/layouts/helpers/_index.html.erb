@@ -1,0 +1,97 @@
+<% content_for :header_page do %>
+    <%= render 'layouts/helpers/title_page', title: translate_module(model, :other), 
+    links:  [
+      {name: 'Home', path: '/'},
+      {name: translate_module(model, :other), path: ''}
+    ] 
+    %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= translate_module(model, :other) %>
+          <% if actions.include?(:download_events_excel) %>
+            <%= link_to events_path(format: :xlsx), class: "btn btn-secundary btn-sm #{@events.first.nil? ? 'disabled' : ''}" do %>
+              <i class="far fa-file-alt"></i>
+            <% end %>
+          <% end %>
+
+          <% if actions.include?(:download_technical_services_excel) %>
+            <%= link_to technical_services_path(format: :xlsx), class: "btn btn-secundary btn-sm #{@technical_services.first.nil? ? 'disabled' : ''}", title: 'Download Excel' do %>
+              <i class="far fa-file-alt"></i>
+            <% end %>
+          <% end %>
+        </h3>
+
+        <div class="card-tools">
+          <div class="row">
+          <%= link_to translate_action(:create),
+          { controller: controller, action: :new },
+          class: 'btn btn-primary btn-sm mr-3' %>
+
+          <%= render 'layouts/helpers/search_box',
+            model: model,
+            controller: controller,
+            search_match: search_match %>
+            </div>
+        </div>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <% attributes.each do |attr| %>
+                <th> <%= attr.is_a?(Hash) ? translate_attr(attr[:model], model) : translate_attr(attr, model) %> </th>
+              <% end %>
+              <th colspan="<%= actions.count %>"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% collection.each do |object| %>
+              <tr>
+                <% attributes.each do |attr| %>
+                  <td> <%= attr.is_a?(Hash) ? object.send(attr[:model]).send(attr[:attr]) : object.send(attr) %> </td>
+                <% end %>
+                <td align="right">
+                  <% if actions.include?(:show) %>
+                    <%= link_to object, class: 'btn btn-info btn-sm' do %>
+                      <i class="fas fa-eye"></i>
+                    <% end %>
+                  <% end %>
+                  <% if actions.include?(:edit) %>
+                    <%= link_to [:edit, object], class: 'btn btn-info btn-sm', title: 'Editar' do %>
+                      <i class="far fa-edit"></i>
+                    <% end %>
+                  <% end %>
+                  <% if actions.include?(:delete) %>
+                    <%= render 'layouts/helpers/delete', object: object, identification: delete_identification %>
+                  <% end %>
+                  <% if actions.include?(:new_occurrences) %>
+                    <%= link_to "/occurrences/#{object.id}/index", class: 'btn btn-info btn-sm', title: 'Ocorrências' do %>
+                      <i class="fa fa-plus"></i>
+                    <% end %>
+                  <% end %>
+                  <% if actions.include?(:download_event_excel) %>
+                      <%= link_to event_path(object, format: :xlsx), class: "btn btn-outline-secondary btn-sm #{object.service_stations.first.nil? ? 'disabled' : ''}", title: 'Download Excel' do %>
+                        <i class="far fa-file-alt"></i>
+                      <% end %>
+                  <% end %>
+                  <% if actions.include?(:download_event_pdf) %>
+                      <%= link_to event_path(object, format: :pdf), class: "btn btn-outline-secondary btn-sm #{object.occurrences.first.nil? ? 'disabled' : ''}", title: 'Download PDF' do %>
+                        <i class="far fa-file-alt"></i>
+                      <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="bg-city-selection"></div>
+<div class="login-box">
+  <div class="login-logo text-white">
+    <%= image_tag("logo_cbmpe.png", style: "width: 120px") %><br />
+    <b>SOGE</b><br /> Sistema Operacional para Grandes Eventos
+  </div> <!-- /.login-logo -->
+
+  <div class="card">
+    <div class="card-body login-box-body">
+      <p class="login-box-msg">Informe suas credenciais</p>
+      
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="input-group mb-3 has-feedback">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email" %>
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div><!--/.input-group-->
+
+        <div class="input-group mb-3 has-feedback">
+          <%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "Senha", autocomplete: "off" %>
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div><!--/.input-group-->
+
+        <div class="row">
+          <div class="col-8">
+            
+          </div><!-- /.col -->
+
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      <% end %>
+
+
+    </div><!-- /.login-box-body -->
+  </div><!--/.card-->
+</div><!--/.login-box>

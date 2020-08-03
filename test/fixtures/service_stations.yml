@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyString
+  acronym: MyString
+  militaries_quantity: 1
+  work_shift: MyString
+  event: one
+  command_post: one
+  service_station_type: one
+
+two:
+  description: MyString
+  acronym: MyString
+  militaries_quantity: 1
+  work_shift: MyString
+  event: two
+  command_post: two
+  service_station_type: two

@@ -1,0 +1,70 @@
+<% content_for :header_page do %>
+    <%= render 'layouts/helpers/title_page', title: translate_module(:occurrence, :other),
+      links:  [
+        {name: 'Home', path: '/'},
+        {name: 'Eventos', path: "/events?utf8=✓&city_selected=#{@service_station.event.city.id}"},
+        {name: @service_station.event.description, path: "/events/#{@service_station.event.id}"},
+        {name: @service_station.acronym, path: "javascript:;", modal_target: "#modal-service-stations"},
+        {name: "#{translate_module(:occurrence, :other)}", path: ""}
+      ]
+    %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= get_title(@service_station) %></h3>
+
+        <div class="card-tools">
+          <div class="row">
+            <%= link_to translate_action(:create), "/occurrences/#{@service_station.id}/new/", class: "btn btn-primary btn-sm mr-3" %>
+
+            <%= render 'layouts/helpers/search_box',
+              model: :occurrence,
+              controller: :occurrences,
+              search_match: :occurrence_nature_description_cont %>
+          </div>
+        </div>
+      </div>
+       <!-- /.card-header -->
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th><%= translate_attr(:service_station, :occurrence) %></th>
+              <th><%= translate_attr(:occurrence_nature, :occurrence) %></th>
+              <th><%= translate_attr(:interval, :occurrence) %></th>
+              <th><%= translate_attr(:amount, :occurrence) %></th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @occurrences.each do |occurrence| %>
+              <tr>
+                <td><%= occurrence.service_station.description %></td>
+                <td><%= occurrence.occurrence_nature.description %></td>
+                <td><%= occurrence.interval_to_show %></td>
+                <td><%= occurrence.amount %></td>
+                <td align="right">
+                  <%= link_to [:edit, occurrence], class: 'btn btn-info btn-sm', title: 'Editar' do %>
+                      <i class="far fa-edit"></i>
+                    <% end %>
+                  <%= render 'layouts/helpers/delete', object: occurrence, identification: occurrence.nature.description %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal_service_stations">
+  <%= javascript_pack_tag 'src/scenes/events/modal_service_stations',
+    id: 'modal_service_stations_data_id',
+    eventData: @service_station.event.to_json,
+    data: @service_station.event.service_stations.map{ |service_station| {id: service_station.id, name: "#{service_station.command_post.acronym} | #{service_station.acronym} - #{service_station.description}"} }.to_json
+  %>
+</div>

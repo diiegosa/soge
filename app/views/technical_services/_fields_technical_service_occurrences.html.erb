@@ -1,0 +1,33 @@
+  <div class="form-group row">
+    <label class="col-sm-2 control-label text-right">Ocorrências</label>
+    <div class="col-sm-8">
+
+      <table class="table table-bordered">
+        <thead>                  
+          <tr>
+            <th>Natureza da Ocorrência</th>
+            <th>Quantidade</th>
+          </tr>
+        </thead>
+
+        <tbody>         
+          <% @technical_service.technical_service_occurrences.each_with_index do |technical_service_occurrence, index| %>
+            <tr>
+              <td>
+                <%= technical_service_occurrence.occurrence_nature.description %>
+                <input type="hidden" name=<%= "technical_service[technical_service_occurrences_attributes][#{index}][id]" %> value="<%= technical_service_occurrence.id %>" />
+                <input type="hidden" name=<%= "technical_service[technical_service_occurrences_attributes][#{index}][occurrence_nature_id]" %> value="<%= technical_service_occurrence.occurrence_nature.id %>" />
+              </td>
+              <td>
+                <input type="number" min="0" name=<%= "technical_service[technical_service_occurrences_attributes][#{index}][amount]" %> class="form-control" value="<%= technical_service_occurrence.amount || '0' %>" required="true">
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      
+      <%#= form.fields_for :technical_service_occurrences do |occurrences| %>
+        <%#= occurrences.text_field :amount %>
+      <%# end %>
+    </div>
+  </div><!-- /.form-group -->

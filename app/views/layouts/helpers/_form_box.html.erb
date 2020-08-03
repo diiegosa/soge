@@ -1,0 +1,101 @@
+<% content_for :header_page do %>
+  <%= render 'layouts/helpers/title_page', model: model, title: translate_module(model, :other), 
+      links:  [
+        {name: 'Home', path: '/'},
+        {name: translate_module(model, :other), path: "/#{model.to_s.pluralize}"},
+        {name: translate_action(action), path: ''}
+      ] 
+  %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= translate_action(action) %></h3>
+      </div>
+      <!-- /.card-header -->
+      
+      <!-- form start -->
+      <%= form_with(model: object, local: true, class: "form-horizontal", html: { multipart: true }) do |form| %>
+
+        <div class="card-body">
+          <%= render  'layouts/helpers/error', object: object %>
+          
+          <% fields.each do |field| %>
+            <div class="form-group row">
+              <% if field[:kind] === :text_field %>
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %></label>
+                <div class=<%= "col-sm-#{field[:input_size]}" %> >
+                  <%= form.text_field field[:name], class: "form-control #{field[:extra_class]}" %>
+                </div>
+              <% elsif field[:kind] === :number_field %>
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %></label>
+                <div class=<%= "col-sm-#{field[:input_size]}" %>>
+                  <%= form.number_field field[:name], class: "form-control #{field[:extra_class]}", step: field[:step] %>
+                </div>
+              <% elsif field[:kind] === :datetime_range %>
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %></label>
+                <div class=<%= "col-sm-#{field[:input_size]}" %>>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="far fa-clock"></i></span>
+                    </div>
+                    <input required onkeypress="return false;" value="<%= field[:datetime_range_default_value] %>" type="text" name="<%=field[:name]%>" class="form-control float-right" id="reservationtime">
+                  </div>
+                </div>
+              <% elsif field[:kind] === :password_field %>
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %></label>
+                <div class=<%= "col-sm-#{field[:input_size]}" %>>
+                  <%= form.password_field field[:name], class: "form-control #{field[:extra_class]}" %>
+                </div>
+              <% elsif field[:kind] === :text_area %>
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %></label>
+                <div class=<%= "col-sm-#{field[:input_size]}" %>>
+                  <%= form.text_area field[:name], class: "form-control #{field[:extra_class]}", rows: 4 %>
+                </div>
+              <% elsif field[:kind] === :select %>
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %></label>
+                <div class=<%= "col-sm-#{field[:input_size]}" %>>
+                  <%= form.select(field[:name], field[:collection], { prompt: 'Selecionar ...'},
+                    { class: "form-control #{field[:extra_class]}", 'data-live-search': "true" }) %>
+                </div>
+              <% elsif field[:kind] === :multselect %>
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %></label>
+                <div class=<%= "col-sm-#{field[:input_size]}" %>>
+                  <%= form.select(field[:name], field[:collection], {},
+                    { class: "form-control #{field[:extra_class]}", multiple: true, title: "Selecionar ..." }) %>
+                </div>
+              <% elsif field[:kind] === :file_field %>
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %></label>
+                <div class=<%= "col-sm-#{field[:input_size]}" %>>
+                  <%= form.file_field field[:name] %>
+                </div>
+                <% if object.send(field[:name]).present? %>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label text-right"><%= translate_attr(field[:name], model) %> (download)</label>
+                  <div class=<%= "col-sm-#{field[:input_size]}" %>>
+                    <div class="col-sm-3">
+                      <%= link_to "Clique para baixar o arquivo", object.send(field[:name]).url(:original, false), target: "_blank" %>
+                    </div>
+                    <div class="col-sm-1">
+                      <%= render 'layouts/helpers/attachment_delete', attachment_name: field[:name].to_s %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+          <%= yield :fields %>
+        </div>
+        <!-- /.card-body -->
+
+        <div class="card-footer">
+          <%= link_to translate_action(:back), model_path, class: "btn btn-default" %>
+          <button type="submit" class="btn btn-info float-right"><%= translate_action(btn_action) %></button>
+        </div>
+      <% end %>
+    </div>
+  </div><!--/.col-12-->
+</div><!--/.row-->

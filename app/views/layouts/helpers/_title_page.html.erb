@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= title %></h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          
+          <% links.each do |l| %>
+            <li class="breadcrumb-item <%= l[:path].empty? ? 'active' : '' %>">
+              <% if l[:path].empty? %>
+                <%= l[:name] %>
+              <% else %>
+                <a href="<%= l[:path] %>" <%= l.include?(:modal_target) ? "data-toggle=modal data-target=#{l[:modal_target]}" : 'xxx' %> ><%= l[:name] %></a>
+              <% end %>
+            </li>
+          <% end %>
+        </ol>
+      </div>
+    </div>
+</div><!-- /.container-fluid -->

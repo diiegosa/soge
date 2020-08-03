@@ -1,0 +1,41 @@
+<div class="modal fade" id="modal-occurrences-report">
+    <div class="modal-dialog">
+        <%= form_with(url: "/occurrences/#{@event.id}/report", id: "form-occurrences-report", method: "get", class: "row", local: true) do |form| %>        
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Relatório de Ocorrências</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                
+                <div class="modal-body">
+                    <div class="form-group col-12">
+                        <label class="control-label"><%= translate_module(:service_station, :one) %></label>
+                        <%= form.select(:service_station_id, @event.service_stations.map{|ss| [ss.acronym, ss.id] }, { prompt: 'Todos os Postos'},
+                            { class: "form-control", 'data-live-search': "true" }) %>
+                    </div>
+
+                    <div class="form-group col-12">
+                        <label class="control-label">Horários</label>
+                        <%= form.select(:intervals, @event.get_interval_list.map {|p| [ p[1] ]}, {},
+                            { class: "form-control selectpicker", "data-actions-box": true, multiple: true, required: true }) %>
+                    </div>
+
+                    <div class="form-group col-12">
+                        <label class="control-label">Turno</label>
+                        <%= form.select(:work_shift, (1..@event.work_shift_amount).map{|work_shift| ["#{work_shift}º Turno"] }, { prompt: 'Todos os Turnos'},
+                            { class: "form-control" }) %>
+                    </div>
+                
+                </div><!--/.modal-body-->
+
+                <div class="modal-footer"> 
+                    <button type="submit" class="btn btn-info float-right">Gerar Relatório</button>
+                </div><!--/.modal-footer-->
+            </div><!--/.modal-content-->
+        <% end %>
+    </div>
+    
+</div>

@@ -1,0 +1,157 @@
+<% content_for :header_page do %>
+    <%= render 'layouts/helpers/title_page', title: "#{@event.description}/#{@event.start_time.strftime("%Y")}", 
+        links:  [
+          {name: 'Home', path: '/'},
+          {name: 'Eventos', path: "/events?utf8=✓&city_selected=#{@event.city.id}"},
+          {name: @event.description, path: ""}
+        ]
+    %>
+<% end %>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Detalhes</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <strong><i class="fas fa-map-marker-alt mr-1"></i> Cidade</strong>
+        <p class="text-muted"><%= @event.city.name %></p>
+
+        <hr>
+
+        <strong><i class="fas fa-calendar-alt mr-1"></i> Data</strong>
+        <p class="text-muted"><%= @event.duration_time %></p>
+
+        <hr>
+
+        <strong><i class="fas fa-hourglass-half mr-1"></i> Intervalo de lançamento das ocorrências</strong>
+        <p class="text-muted">A cada <%= @event.occurrence_interval %> hora(s)</p>
+
+        <hr>
+
+        <strong><i class="fas fa-history mr-1"></i> Quantidade de Turnos</strong>
+        <p class="text-muted"><%= @event.work_shift_amount %></p>
+
+      </div><!-- /.card-body -->
+    </div><!--/.card detalhes -->
+  </div><!--/.col-3 -->
+
+  <div class="col-md-9">
+    <div class="row">
+
+        <%= link_to edit_event_path(@event.id), class: "btn btn-app" do %>
+          <i class="fas fa-edit"></i> Editar Evento
+        <% end %>
+
+        <%= link_to "javascript:;", class: "btn btn-app #{@event.service_stations.first.nil? ? 'disabled' : ''}", "data-toggle" => "modal", "data-target" => "#modal-service-stations" do %>
+          <i class="fas fa-laptop-medical"></i> Registrar Ocorrências
+        <% end %>
+        <div id="modal_service_stations">
+          <%= javascript_pack_tag 'src/scenes/events/modal_service_stations',
+            id: 'modal_service_stations_data_id',
+            eventData: @event.to_json,
+            data: @event.service_stations.map{ |service_station| {id: service_station.id, name: "#{service_station.command_post.acronym} | #{service_station.acronym} - #{service_station.description}"} }.to_json
+          %>
+        </div>
+        
+        <%= link_to "javascript:;", class: "btn btn-app #{@event.service_stations.first.nil? ? 'disabled' : ''}", "data-toggle" => "modal", "data-target" => "#modal-occurrences-report" do %>
+          <i class="fas fa-receipt"></i> Relatório de Ocorrências
+        <% end %>
+        <%= render 'modal_occurrences_report' %>
+
+        <%= link_to event_path(@event, format: :xlsx), class: "btn btn-app #{@event.service_stations.first.nil? ? 'disabled' : ''}" do %>
+          <i class="fas fa-file-excel"></i> Relatório Geral
+        <% end %>
+      
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-sm-6">
+        <h6 class="mt-0 mb-2">Quantidade de Militares</h6>
+
+        <% @event.get_militaries_quantity_by_work_shift.each do |work_shift, quantity| %>
+          <div class="info-box mb-3 bg-info">
+            <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><%= "#{work_shift}º" %> Turno</span>
+              <span class="info-box-number"><%= quantity %></span>
+            </div><!-- /.info-box-content -->
+          </div>
+        <% end %>
+      </div><!--/.col -->
+
+      <div class="col-12 col-sm-6">
+        <h6 class="mt-0 mb-2">Quantidade de Viaturas</h6>
+
+        <% @event.get_vehicles_quantity_by_work_shift.each do |object| %>
+        <div class="info-box mb-3 bg-primary">
+          <span class="info-box-icon"><i class="fas fa-ambulance"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text"><%= "#{object[:work_shift]}º" %> Turno</span>
+            <span class="info-box-number"><%= object[:vehicle_quantity].to_i %></span>
+          </div><!-- /.info-box-content -->
+        </div>
+        <% end %>
+      </div><!--/.col-->
+    </div><!--/.row-->
+    
+    <h5 class="mt-4 mb-2">Ocorrências por Tipo</h5>
+    <div class="row">
+      <% OccurrenceType.get_without_technical_services.each do |occurrence_type| %>
+        <% style = get_color_and_icon(occurrence_type.description) %>
+        <div class="col-12 col-sm-6">
+          <div class="info-box">
+            <span class="info-box-icon <%=style[:color]%> elevation-1"><i class="<%=style[:icon]%>"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><%= occurrence_type.description %></span>
+              <span class="info-box-number">
+                <%= @event.occurrences.where(occurrence_nature_id: occurrence_type.occurrence_natures.pluck(:id)).sum(:amount) %>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      <% end %>
+    </div><!--/.row -->
+  </div><!--/col-md-9-->
+</div><!--/.row-->
+
+<div id="charts">
+  <%= javascript_pack_tag 'src/scenes/events/charts',
+    id: 'charts_data_id',
+    eventData: @event.to_json
+  %>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+        <div class="card-header border-0">
+          <div class="d-flex justify-content-between">
+            <h3 class="card-title">Ocorrências por Natureza</h3>
+          </div>
+        </div>
+        <div class="card-body">
+            <% @event.occurrences.select(:occurrence_nature_id, 'SUM(amount) as total').order('SUM(amount) DESC').group(:occurrence_nature_id).each do |occurrence| %>
+              <% style = get_color_and_icon(occurrence.nature_description) %>
+              <div class="progress-group">
+                <%= occurrence.occurrence_nature.description %>
+                <span class="float-right"><b><%= get_percentual_of_occurrence_nature(occurrence.total) %></b> (<%= occurrence.total %>/<%= @event.occurrences.sum(:amount) %>)</span> 
+                <div class="progress progress-sm">
+                  <div class="progress-bar <%= style[:color] %>" style="width: <%= get_percentual_of_occurrence_nature(occurrence.total) %>"></div>
+                </div>
+              </div>
+              <!-- /.progress-group -->
+            <% end %>
+
+        </div>
+      </div>
+  </div>
+</div>

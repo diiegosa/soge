@@ -1,0 +1,11 @@
+<!-- Erro -->
+<% if object.errors.any? %>
+  <div class="callout callout-danger">
+    <h5>Algum erro foi encontrado!</h5>
+
+    <% object.errors.full_messages.each do |message| %>
+      <p class="mb-1">- <%= message %></p>
+    <% end %>
+  </div>
+
+<% end %>

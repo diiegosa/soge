@@ -1,0 +1,61 @@
+<div class="ml-2 ml-md-5 mr-2 mr-md-5 mt-2 mt-md-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                        <div class="mt-1">
+                            <div class="row">
+                                <div class="col-0 col-md-2 text-right">
+                                    <div class="d-none d-sm-block">
+                                        <%= image_tag("logo_cbmpe.png", class: "img-fluid mt-sm-4 mt-5", alt: "CBMPE") %>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <h3 class="mt-4">
+                                        <strong>
+                                            <div class="d-none d-sm-block">SECRETARIA DE DEFESA SOCIAL<br/></div>
+                                            <div class="d-none d-sm-block">CORPO DE BOMBEIROS MILITAR DE PERNAMBUCO</div>
+                                            <div class="d-sm-none d-block">
+                                                <%= image_tag("logo_cbmpe.png", class: "img-fluid", alt: "CBMPE", width: "50px") %>
+                                                <br> CBMPE
+                                            </div>
+                                        </strong>
+                                    </h3>
+                                    <hr>
+                                    <% if @event %>
+                                        <h4>
+                                            <%= @event.nm_pess %><br />
+                                            <small><%= @event.address %></small>
+                                        </h4>
+                                        <div class="d-block">
+                                            <h4>
+                                                Status: <span class="text-<%= @event.is_regularized? ? 'primary' : 'danger'%> text-bold">
+                                                <%= @event.status %></span>
+                                            </h4>
+                                        </div>
+                                        <% if @event.nr_cap_max_pess.present? %>
+                                            <div class="d-block">
+                                                <h4>
+                                                    Capacidade público: <%= @event.nr_cap_max_pess %>
+                                                </h4>
+                                            </div>
+                                        <% end %>
+                                        <% if @event.dt_fim_valid.present? %>
+                                            <div class="d-block">
+                                                <h4>
+                                                    Validade: <%= @event.dt_fim_valid.strftime("%d/%m/%Y") rescue '' %>
+                                                </h4>
+                                            </div>
+                                        <% end %>
+                                    <% else %>
+                                        <h4 class="text-danger">Evento não encontrado! Protocolo: <%= params['protocol'] %></h4>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div><!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>

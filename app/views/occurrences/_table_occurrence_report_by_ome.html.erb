@@ -1,0 +1,44 @@
+<section >
+    <hr class="doted" />
+
+    <table width="100%" style="font-size: 13pt;">
+        <tr>
+            <td><b>Relatório:</b> <%= params[:report_label] %> </td>
+            
+            <td><b>Data:</b> <%= params[:report_interval] %></td>
+            
+        </tr>
+    </table>
+
+    <hr class="doted" />
+    <br />
+</section>
+
+<section class="p-2">
+    <table width="100%" class="table-bordered" style="background: white" >
+        <tr>
+            <th width="15%">Natureza/Horário</th>
+
+            <% @ome_list.each do |ome| %>
+                <th class="text-center"><%= ome[:acronym] %></th>
+            <%end %>
+            <th class="text-center">Total</th>
+        </tr>
+            
+        <% @occurrence_nature_with_omes.each_with_index do |occurrence, index| %>
+            <% if occurrence.occurrence_type_name != @occurrence_nature_with_omes[index-1].occurrence_type_name %>
+                <tr class="table-primary">
+                    <td colspan="100%" class="text-center"><b><%= occurrence.occurrence_type_name %></b></td>
+                </tr>
+            <% end %>
+
+            <tr class="">
+                <td><%= occurrence.occurrence_nature %> </td>
+
+                <%= generate_columns_of_occurrence_nature_amount_by_interval(occurrence, @ome_list.pluck(:column_name)) %>
+            </tr>
+        <%end %>
+    </table>
+</section>
+
+<br /><br />

@@ -1,0 +1,14 @@
+<%= render 'layouts/helpers/index',
+    model: :event,
+    controller: :events,
+    attributes: [
+      :description,
+      :start_time_to_index,
+      {model: :city, attr: :name},
+    ],
+    actions: [:show, :delete],  
+    delete_identification: :description,
+    collection: @events,
+    search_match: :description_or_city_name_cont %>
+
+ 

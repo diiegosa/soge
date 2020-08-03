@@ -1,0 +1,25 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#rmModalId<%= object.id %>" title="Deletar">
+  <i class="far fa-trash-alt"></i>
+</button>
+
+<!-- Modal -->
+<div id="rmModalId<%= object.id %>" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Deseja realmente deletar?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><%= identification.respond_to?(:to_str) ? identification : object[identification] %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= translate_action(:cancel) %></button>
+        <%= link_to translate_action(:destroy), object, method: :delete, class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+</div>

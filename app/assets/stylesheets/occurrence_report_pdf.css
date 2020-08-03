@@ -1,0 +1,33 @@
+body{
+    font-size: 20px;
+    background-size: 100% 100%;
+}
+
+h1, h2, h3, h4{
+    margin: 0!important;
+    padding: 0!important;
+}
+
+.header hr{
+    margin: 0 !important;
+    border-color: #1565C0;
+    border-width: 4px;
+}
+
+.text-center{
+    text-align: center!important
+}
+
+.table-bordered{
+    font-size: 12pt
+}
+
+.table-bordered td{border:1px solid #ccc!important}
+.table-bordered th{border:1px solid #666!important; background: #ccc}
+.table-primary{
+    background: #b8daff
+}
+
+.table-bordered,.table-bordered-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}.table-bordered-all{border:1px solid #ccc}
+.table-bordered td,.table-bordered th,.table-bordered-all td,.table-bordered-all th{padding:8px 8px;display:table-cell;text-align:left;vertical-align:top}
+.table-bordered th:first-child,.table-bordered td:first-child,.table-bordered-all th:first-child,.table-bordered-all td:first-child{padding-left:16px}

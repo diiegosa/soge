@@ -1,0 +1,21 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+  project_heading = style.add_style(b: true, sz: 14)
+  heading = style.add_style(b: true)
+
+  wb.add_worksheet(name: "Eventos") do |sheet|
+    # Add a title row
+    sheet.add_row ["DETALHAMENTO DE EVENTOS"], style: project_heading
+    # Add the date this was downloaded
+    sheet.add_row ["Baixado em", Time.now.strftime("%d/%m/%Y %H:%M")]
+    # Add a blank row
+    sheet.add_row []
+    # Create the header row
+    sheet.add_row ["nome","datahora_inicial","datahora_final","intervalo_tempo_para_lancamento_de_ocorrencia","qtd_turnos","municipio","diretoria"], style: heading
+    # Create entries for each event
+    @events.each do |event|
+      sheet.add_row [event.description, event.start_time, event.final_time, event.occurrence_interval, event.work_shift_amount, event.city.name, event.management.name]
+    end
+  end
+end

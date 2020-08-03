@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Relatório de Ocorrências</title>
+    <%= wicked_pdf_stylesheet_link_tag "occurrence_report_pdf" %>
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+</head>
+<body style="">
+
+    <section class="header">
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <%= wicked_pdf_image_tag("logo_cbmpe.png", style: "width: 120px") %>
+                </td>
+
+                <td>
+                    <h3 class="font-bold">
+                        SECRETARIA DE DEFESA SOCIAL<br/>
+                        CORPO DE BOMBEIROS MILITAR DE PERNAMBUCO
+                    </h3>
+                    
+                    <hr />
+
+                    <h4></h4>
+                </td>
+            </tr>
+        </table>    
+        <br />       
+    </section>
+
+
+    <section>
+        <h1 style="text-align: center">
+            <%= params[:report_label] %>
+        </h1>
+    
+    </section>
+
+    <%= render 'table_occurrence_report_by_ome.html.erb'  %>
+
+</body>
+</html>

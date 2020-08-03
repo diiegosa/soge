@@ -1,0 +1,15 @@
+<% content_for :fields do %>
+  <%= render 'fields_technical_service_occurrences' %>
+<% end %>
+
+<%= render 'layouts/helpers/form_box',
+  action: :edit,
+  model: :technical_service,
+  object: @technical_service,
+  model_path: technical_services_path,
+  btn_action: :update,
+  fields: [
+    {kind: :select, name: :technical_service_interval_id, collection: TechnicalServiceInterval.all.collect {|interval| [ interval.description, interval.id ]}, extra_class: 'form-control', input_size: 4},
+    {kind: :datetime_range, name: "technical_service[duration_time]", datetime_range_default_value: @technical_service.duration_time, extra_class: '', input_size: 6},
+    {kind: :select, name: :sgp_military_id, collection: Sgp::Military.fetch_all.collect {|military| [military['custom_name'], military['id']] }, extra_class: 'selectpicker', input_size: 8},
+  ] %>

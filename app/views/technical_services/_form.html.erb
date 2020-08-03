@@ -1,0 +1,37 @@
+<%= form_with(model: technical_service, local: true) do |form| %>
+  <% if technical_service.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(technical_service.errors.count, "error") %> prohibited this technical_service from being saved:</h2>
+
+      <ul>
+      <% technical_service.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.datetime_select :start_time, id: :technical_service_start_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :final_time %>
+    <%= form.datetime_select :final_time, id: :technical_service_final_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :answerable_registry %>
+    <%= form.text_field :answerable_registry, id: :technical_service_answerable_registry %>
+  </div>
+
+  <div class="field">
+    <%= form.label :technical_service_id %>
+    <%= form.text_field :technical_service_id, id: :technical_service_technical_service_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

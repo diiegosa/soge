@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  service_station: one
+  work_shift: 1
+  militaries_quantity: 1
+
+two:
+  service_station: two
+  work_shift: 1
+  militaries_quantity: 1

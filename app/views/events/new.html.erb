@@ -1,0 +1,11 @@
+<% content_for :header_page do %>
+  <%= render 'layouts/helpers/title_page', title: translate_module(:event, :other), 
+      links:  [
+        {name: 'Home', path: '/'},
+        {name: 'Eventos', path: 'javascript:window.history.back();'},
+        {name: 'Cadastrar', path: ''}
+      ]
+  %>
+<% end %>
+
+<%= render 'new' %>

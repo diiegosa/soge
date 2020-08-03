@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @service_station.description %>
+</p>
+
+<p>
+  <strong>Acronym:</strong>
+  <%= @service_station.acronym %>
+</p>
+
+<p>
+  <strong>Militaries quantity:</strong>
+  <%= @service_station.militaries_quantity %>
+</p>
+
+<p>
+  <strong>Work shift:</strong>
+  <%= @service_station.work_shift %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @service_station.event %>
+</p>
+
+<p>
+  <strong>Command post:</strong>
+  <%= @service_station.command_post %>
+</p>
+
+<p>
+  <strong>Service station type:</strong>
+  <%= @service_station.service_station_type %>
+</p>
+
+<%= link_to 'Edit', edit_service_station_path(@service_station) %> |
+<%= link_to 'Back', service_stations_path %>

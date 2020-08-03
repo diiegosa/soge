@@ -1,0 +1,52 @@
+<%= form_with(model: service_station, local: true) do |form| %>
+  <% if service_station.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(service_station.errors.count, "error") %> prohibited this service_station from being saved:</h2>
+
+      <ul>
+      <% service_station.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description, id: :service_station_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :acronym %>
+    <%= form.text_field :acronym, id: :service_station_acronym %>
+  </div>
+
+  <div class="field">
+    <%= form.label :militaries_quantity %>
+    <%= form.number_field :militaries_quantity, id: :service_station_militaries_quantity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :work_shift %>
+    <%= form.text_field :work_shift, id: :service_station_work_shift %>
+  </div>
+
+  <div class="field">
+    <%= form.label :event_id %>
+    <%= form.text_field :event_id, id: :service_station_event_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :command_post_id %>
+    <%= form.text_field :command_post_id, id: :service_station_command_post_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :service_station_type_id %>
+    <%= form.text_field :service_station_type_id, id: :service_station_service_station_type_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

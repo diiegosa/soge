@@ -1,0 +1,65 @@
+<%= form_with(model: @event, local: true, class: "form-horizontal", html: { multipart: true }) do |form| %>
+  <%= render  'layouts/helpers/error', object: @event %>
+  <div class="card-body">
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label class="control-label text-right"><%= translate_attr(:sac_city_id, :event) %></label>
+        <%= form.select(:sac_city_id, @cities.collect {|p| [ p.name, p.id ]}, { prompt: 'Selecionar ...'}, 
+          { class: "form-control selectpicker", 'data-live-search': "true", required: true }) %>
+      </div>
+
+      <div class="form-group col-sm-6">
+        <label class="control-label text-right"><%= translate_attr(:sgp_ome_id, :event) %></label>
+        <%= form.select(:sgp_ome_id, @managements.collect {|p| [ p.name, p.id ]}, { prompt: 'Selecionar ...'}, 
+          { class: "form-control selectpicker", 'data-live-search': "true", required: true }) %>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label class="control-label text-right"><%= translate_attr(:description, :event) %></label>
+        <%= form.text_field :description, class: "form-control", required: true %>
+      </div>
+      
+      <div class="form-group col-sm-6">
+        <label class="control-label text-right"><%= translate_attr(:duration_time, :event) %></label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="far fa-clock"></i></span>
+          </div>
+          <input required onkeypress="return false;" value="<%= @event.duration_time %>" type="text" name="event[duration_time]" class="form-control float-right" id="reservationtime">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label class="control-label text-right"><%= translate_attr(:occurrence_interval, :event) %></label>
+        <%= form.number_field :occurrence_interval, class: "form-control", step: 1, required: true, placeholder: "Exemplo.: Se for de 2 em 2 horas, digite 2", min: 1 %>
+      </div>
+      
+      <div class="form-group col-sm-6">
+        <label class="control-label text-right"><%= translate_attr(:work_shift_amount, :event) %></label>
+        <%= form.number_field :work_shift_amount, class: "form-control", step: 1, required: true, placeholder: "Turnos de trabalho", min: 1 %>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="form-group">
+        <label class="control-label text-right"><%= translate_attr(:command_posts_number, :event) %></label>
+        <% @command_posts.each do |command_post| %>
+          <div class="custom-control custom-checkbox">
+            <%= check_box_input(command_post, @event.command_posts) %>
+            <label for="<%= "checkBox#{command_post.id}" %>" class="custom-control-label"><%= command_post.description %></label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- /.card-body -->
+
+  <div class="card-footer">
+    <a class="btn btn-default float-left" href="javascript:window.history.back();">Voltar</a>
+    <button type="submit" class="btn btn-info float-right"><%= translate_action(btn_action) %></button>
+  </div>
+<% end %>

@@ -1,0 +1,57 @@
+<% content_for :header_page do %>
+  <%= render 'layouts/helpers/title_page', title: translate_module(:occurrence, :other),
+      links:  [
+        {name: 'Home', path: '/'},
+        {name: 'Eventos', path: "/events?utf8=✓&city_selected=#{@service_station.event.city.id}"},
+        {name: @service_station.event.description, path: "/events/#{@service_station.event.id}"},
+        {name: @service_station.acronym, path: "javascript:;", modal_target: "#modal-service-stations"},
+        {name: "#{translate_module(:occurrence, :other)}", path: "/occurrences/#{@service_station.id}/index"},
+        {name: "#{translate_action(:create)}", path: ""}
+      ]
+  %> 
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><%= get_title(@service_station) %></h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <%= form_with(model: @occurrence, local: true, class: "form-horizontal", html: { multipart: true }) do |form| %>
+            <%= render  'layouts/helpers/error', object: @occurrence %>
+            <div class="card-body">
+              <%# abort @service_station.event_id.to_s %>
+              <div id="occurrence_fields">
+                <%= javascript_pack_tag 'src/scenes/occurrences/fields', 
+                  id: 'occurrence_fields_id', 
+                  service_station_id: @service_station.id,
+                  occurrence_natures: @occurrence_natures.map {|v| { value: v.id, description: v.description }}.to_json,
+                  occurrence: @occurrence.to_json
+                %>
+              </div>
+
+              <%= form.hidden_field :service_station_id, value: @service_station.id %>
+              <%= form.hidden_field :event_id, value: @service_station.event_id %>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+              <%= link_to translate_action(:back), @action_route, class: "btn btn-default float-left" %>
+              <button type="submit" class="btn btn-info float-right"><%= translate_action(btn_action) %></button>
+            </div>
+          <% end %>   
+        </div>
+        <!-- /.card-body -->
+    </div><!--/.card-->
+  </div><!--/.col-12-->
+</div><!--/.row-->
+
+<div id="modal_service_stations">
+  <%= javascript_pack_tag 'src/scenes/events/modal_service_stations',
+    id: 'modal_service_stations_data_id',
+    eventData: @service_station.event.to_json,
+    data: @service_station.event.service_stations.map{ |service_station| {id: service_station.id, name: "#{service_station.command_post.acronym} | #{service_station.acronym} - #{service_station.description}"} }.to_json
+  %>
+</div>

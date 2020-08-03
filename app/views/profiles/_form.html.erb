@@ -1,0 +1,85 @@
+<% content_for :header_page do %>
+  <%= render 'layouts/helpers/title_page', model: :profile, title: translate_module(:profile, :other), 
+  links:  [
+    {name: 'Home', path: '/'},
+    {name: translate_module(:profile, :other), path: '/profiles'},
+    {name: translate_action(action), path: ''}
+  ]
+  %>
+<% end %>
+
+<!-- form start -->
+<%= form_with(model: profile, local: true, class: "form-horizontal") do |f| %>
+  
+  <div class="row">
+    <div class="col-12">
+
+      <%= render  'layouts/helpers/error', object: profile %>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><%= translate_action(action) %></h3>
+        </div>
+        <!-- /.card-header -->
+
+          <div class="card-body">
+            
+            <div class="form-group row">
+              <label class="col-sm-2 control-label text-right"><%= translate_attr(:name, :profile) %></label>
+              <div class="col-sm-9">
+                <%= f.text_field :name, id: :profile_name, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2"></label>
+              <div class="form-check col-sm-9">
+                <%= f.check_box :admin, id: :profile_admin, class: "form-check-input" %>
+                <%= translate_attr(:admin, :profile) %>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+      </div><!--/.card-->
+    </div><!--/.col-12-->
+
+    <div class="col-12">
+      <h3>Módulos</h3>
+    </div><!--/col-12-->
+
+    <% Acl::AppModule.all.each_with_index do |m, i| %>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><%= translate_module(m.module) %></h3>
+          </div>
+          <!-- /.card-header -->
+
+          <div class="card-body">
+            <div class="form-group">
+              <div class="col-12">
+                <%= hidden_field_tag "profile[permissions_attributes][#{i}]app_module_id", m.id %>
+                <select name="profile[permissions_attributes][<%= i %>]actions[]" title="Selecionar ..."
+                  class="selectpicker form-control" data-actions-box="true" multiple>
+                  <optgroup label="<%= translate_module(m.module) %>">
+                    <% m.actions.each do |action| %>
+                      <option value="<%= action %>" <%= 'selected' if @profile.has_action(m.id, action) %>
+                      data-icon="fa fa-arrow-circle-o-right"><%= translate_action(action) %></option>
+                    <% end %>
+                  </optgroup>
+                </select>
+              </div>
+            </div><!-- /.form-group -->
+
+          </div><!-- /.card-body -->
+        </div><!--/.card-->
+      </div><!--/.col-md-6-->
+    <% end %>
+
+    <div class="col-12">
+      <%= link_to translate_action(:back), profiles_path, class: "btn btn-default" %>
+      <button type="submit" class="btn btn-info float-right"><%= translate_action(btn_action) %></button>
+    </div><!--/.col-12-->
+
+  </div><!--/.row-->
+<% end %>

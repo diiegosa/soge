@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Starttime:</strong>
+  <%= @occurrence.startTime %>
+</p>
+
+<p>
+  <strong>Finaltime:</strong>
+  <%= @occurrence.finalTime %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @occurrence.amount %>
+</p>
+
+<p>
+  <strong>Occurrencenature:</strong>
+  <%= @occurrence.occurrenceNature %>
+</p>
+
+<p>
+  <strong>Servicestation:</strong>
+  <%= @occurrence.ServiceStation %>
+</p>
+
+<%= link_to 'Edit', edit_occurrence_path(@occurrence) %> |
+<%= link_to 'Back', occurrences_path %>

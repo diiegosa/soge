@@ -1,0 +1,20 @@
+<% content_for :header_page do %>
+  <%= render 'layouts/helpers/title_page', title: "#{@event.description}/#{@event.start_time.strftime("%Y")}", 
+      links:  [
+        {name: 'Home', path: '/'},
+        {name: 'Eventos', path: "/events?utf8=✓&city_selected=#{@event.city.id}"},
+        {name: @event.description, path: "/events/#{@event.id}"},
+        {name: 'Relatório de Ocorrências', path: ''}
+      ]
+  %>
+<% end %>
+
+<%= link_to request.original_url.gsub('/report', '/report.pdf'), :class => "btn btn-primary" do %>
+  <i class="fas fa-file-pdf"></i> Visualizar em PDF
+<% end %>
+
+<%= render 'table_occurrence_report' %>
+
+<style type="text/css">
+.container{ max-width: 100%!important }
+</style>

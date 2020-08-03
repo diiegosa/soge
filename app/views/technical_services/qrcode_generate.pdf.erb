@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <%= stylesheet_link_tag "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" %>
+</head>
+<body>
+    <% if @event %>
+        <div class="pt-3 pl-5 pr-5 pb-3 border border-dark">
+            <h2 class="float-right display-3" style="text-shadow: 4px 4px 6px gray;">QR Code da Segurança</h2>
+            <div style="clear: both"></div>
+            <table class="mb-5" style="margin: 0 auto !important">
+                <tbody>
+                    <th>   
+                        <td>
+                            <%= wicked_pdf_image_tag 'logo_cbmpe.png', height: "300", alt: "CBMPE" %>
+                        </td>
+                        <td valign="bottom">
+                            <div class="ml-5 mr-1">
+                                <%= image_tag("data:image/jpeg;base64,#{@base64_output}", height: "600", alt: "CBMPE") %>
+                            </div>
+                        </td>
+                        <td valign="bottom">
+                            <div class="mb-3">
+                                <%= wicked_pdf_image_tag 'logo_pe.png', height: "100", alt: "PE", class: "ml-5 mb-5" %>
+                            </div>
+                        </td>
+                    <th>
+                </tbody>
+            </table>
+
+            <div class="mb-5 mt-5"></div>
+
+            <span class="d-block">
+                <h3><b><%= @event.nm_pess %></b></h3>
+                <h2><%= @event.address %></h2>
+            </span>
+            <% if @event.nr_cap_max_pess %>
+            <span class="d-block">
+                <h3><b>CAPACIDADE PÚBLICO: <%= @event.nr_cap_max_pess %></b></h3>
+            </span>
+            <% end %>
+            <% if @event.dt_fim_valid %>
+                <span class="d-block">
+                    <h3><b>VALIDADE: <%= @event.dt_fim_valid.strftime("%d/%m/%Y") rescue '' %></b></h3>
+                </span>
+            <% end %>
+            <div class="m-5"></div>
+        </div>   
+    <% elsif params['protocol'].present? %>
+      <div class="alert alert-warning" role="alert">
+        Protocolo (<%= params['protocol'] %>) não encontrado!
+      </div>
+    <% end %>          
+
+</body>
+</html>

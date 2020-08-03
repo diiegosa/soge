@@ -1,0 +1,46 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require font_awesome5_webfont
+ *= require ionicons/dist/css/ionicons.min.css
+ *= require admin-lte/dist/css/adminlte
+ *= require bootstrap-select/dist/css/bootstrap-select.min.css
+ *= require toastr
+ */
+
+ .bg-city-selection{
+    background-image: url("bg-paralax.jpg")!important;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: -2;
+ }
+
+ .bg-city-selection::before{
+    content: "";
+    background-color: #04508f;
+    opacity: 0.9;
+    left: 0;
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+ }

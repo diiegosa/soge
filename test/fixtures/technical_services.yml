@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_time: 2020-02-05 13:47:32
+  final_time: 2020-02-05 13:47:32
+  answerable_registry: MyString
+  technical_service: one
+
+two:
+  start_time: 2020-02-05 13:47:32
+  final_time: 2020-02-05 13:47:32
+  answerable_registry: MyString
+  technical_service: two

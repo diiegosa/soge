@@ -1,0 +1,6 @@
+<!-- Erro -->
+<% if flash[:error] %>
+<script type="text/javascript">
+  toastr.error('<%= flash[:error] %>');
+</script>
+<% end %>

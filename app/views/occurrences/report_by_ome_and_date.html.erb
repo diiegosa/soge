@@ -1,0 +1,22 @@
+<% content_for :header_page do %>
+  <%= render 'layouts/helpers/title_page', title: "Relatório de Ocorrências", 
+      links:  [
+        {name: 'Home', path: '/'},
+        {name: 'Relatório', path: ''}
+      ]
+  %>
+<% end %>
+
+<%= link_to request.original_url.gsub('/report_by_ome_and_date', '/report_by_ome_and_date.pdf'), :class => "btn btn-primary" do %>
+  <i class="fas fa-file-pdf"></i> Visualizar em PDF
+<% end %>
+
+<%= link_to request.original_url.gsub('/report_by_ome_and_date', '/report_by_ome_and_date.xlsx'), :class => "btn bg-info" do %>
+  <i class="fas fa-file-excel"></i> Baixar em Excel
+<% end %>
+
+<%= render 'table_occurrence_report_by_ome' %>
+
+<style type="text/css">
+.container{ max-width: 100%!important }
+</style>

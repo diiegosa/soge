@@ -1,0 +1,38 @@
+<% content_for :header_page do %>
+  <%= render 'layouts/helpers/title_page', title: translate_module(:event, :other), 
+      links:  [
+        {name: 'Home', path: '/'},
+        {name: 'Eventos', path: "/events?utf8=✓&city_selected=#{@event.city.id}"},
+        {name: @event.description, path: "/events/#{@event.id}"},
+        {name: 'Editar', path: ''}
+      ]
+  %>
+<% end %>
+
+<div class="card <%= "collapsed-card" unless @event.errors.any? %>">
+  <div class="card-header">
+    <a data-card-widget="collapse" href="javascript:;" class="d-block" style="outline: none">
+      <h3 class="card-title"><%= @event.description %> | Detalhes do Evento</h3>
+      <button type="button" class="btn btn-tool float-right" style="margin-top: -4px;"><i class="fas fa-plus"></i></button>
+      <span class="clearfix"></span>
+    </a>
+    <!-- /.card-tools -->
+  </div>
+  <!-- /.card-header -->
+  
+  <div class="card-body" style="">
+    <%= render 'form', service: @event, btn_action: :edit %>
+  </div>
+  <!-- /.card-body -->
+</div><!-- /.card -->
+
+<div id="command_post_tabs">
+  <%= javascript_pack_tag 'src/scenes/events/command_posts',
+    id: 'command_post_data_id',
+    eventData: @event.to_json,
+    commandPosts: (@event.command_posts.get_without_pcg.count > 0 ? @event.command_posts.get_without_pcg : @event.command_posts).to_json,
+    serviceStationTypes: ServiceStationType.all.to_json,
+    vehicleTypes: VehicleType.all.to_json,
+    vehicleServiceStationTypeId: ServiceStationType.get_vehicle_id
+  %>
+</div>

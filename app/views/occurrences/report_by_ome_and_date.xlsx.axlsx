@@ -1,0 +1,36 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+  project_heading = style.add_style(b: true, sz: 14)
+  title_column = style.add_style(b: true, sz: 12)
+  heading = style.add_style(b: true)
+
+  ome_list_names = @ome_list.map{ |ome| ome[:acronym] }
+
+  wb.add_worksheet(name: "Relatório por OME") do |sheet|
+    sheet.add_row [params[:report_label].upcase], style: project_heading
+
+    sheet.add_row []
+
+    sheet.add_row [ "Data: #{params[:report_interval]}" ]
+    
+    sheet.add_row []
+
+    sheet.add_row ["Natureza/Horário"].concat( ome_list_names )
+    
+    @occurrence_nature_with_omes.each_with_index do |occurrence, index|
+        
+        if occurrence.occurrence_type_name != @occurrence_nature_with_omes[index-1].occurrence_type_name
+            sheet.add_row [occurrence.occurrence_type_name]
+        end
+        
+        occurrence_columns = []
+        
+        @ome_list.pluck(:column_name).each do |column_name|
+            occurrence_columns = occurrence_columns.concat([occurrence[column_name] || 0])
+        end
+
+        sheet.add_row [occurrence.occurrence_nature].concat( occurrence_columns ) 
+    end
+  end
+end

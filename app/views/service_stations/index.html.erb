@@ -1,0 +1,51 @@
+<% content_for :header_page do %>
+    <%= render 'layouts/helpers/title_page', title: translate_module(:service_station, :other), 
+    links:  [
+      {name: 'Home', path: '/'},
+      {name: translate_module(:service_station, :other), path: '/service_stations'},
+    ] %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= translate_module(:service_station, :other) %></h3>
+
+        <div class="card-tools">
+          <div class="row">
+            <%= link_to translate_action(:create),
+            { controller: :service_stations, action: :new },
+            class: 'btn btn-primary btn-sm mr-3' %>
+
+            <%= render 'layouts/helpers/search_box',
+              model: :service_station,
+              controller: :service_stations,
+              search_match: :description_cont %>
+          </div>
+        </div>
+      </div>
+       <!-- /.card-header -->
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th><%= translate_attr(:description, :service_station) %></th>
+              <th><%= translate_attr(:acronym, :service_station) %></th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @service_stations.each do |service_station| %>
+              <tr>
+                <td><%= service_station.description %></td>
+                <td><%= service_station.acronym %></td>
+                <td></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

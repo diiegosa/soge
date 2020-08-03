@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyString
+  start_time: 2020-01-24 12:48:22
+  final_time: 2020-01-24 12:48:22
+  occurrence_interval: 1
+  work_shift_amount: 1
+  sac: 
+  sgp: 
+
+two:
+  description: MyString
+  start_time: 2020-01-24 12:48:22
+  final_time: 2020-01-24 12:48:22
+  occurrence_interval: 1
+  work_shift_amount: 1
+  sac: 
+  sgp: 

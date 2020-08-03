@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  technical_service: one
+  occurrence_nature: one
+  amount: 1
+
+two:
+  technical_service: two
+  occurrence_nature: two
+  amount: 1
